@@ -1,0 +1,14 @@
+version: 0.2
+#comment
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - echo $STAGE;
+      - cd videoProcess
+      - npm i
+  build:
+    commands:
+      - echo $stage
+      - ./node_modules/.bin/serverless deploy --stage=$STAGE

@@ -1,0 +1,25 @@
+{
+  "name": "audio-processing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy:dev": "SLS_DEBUG=* ./node_modules/.bin/serverless deploy --stage=dev --region=eu-west-1",
+    "deploy:staging": "SLS_DEBUG=* ./node_modules/.bin/serverless deploy --stage=staging --region=eu-west-1",
+    "deploy:production": "SLS_DEBUG=* ./node_modules/.bin/serverless deploy --stage=production --region=eu-west-1",
+    "remove:dev": "./node_modules/.bin/serverless remove --stage=dev",
+    "remove:staging": "./node_modules/.bin/serverless remove --stage=staging"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^8.3.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "aws-sdk": "^2.509.0",
+    "serverless": "^1.53.0"
+  }
+}

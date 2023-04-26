@@ -1,0 +1,127 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: videoProcess
+
+plugins:
+  - serverless-offline
+
+custom:
+  stage: "${opt:stage, self:provider.stage}"
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+  # you can overwrite defaults here
+  region: eu-west-1
+  # profile: mobilepractice
+  memorySize: 256
+  timeout: 15
+  environment: ${file(env.yml):${self:custom.stage}}
+
+  s3:
+    videoBucket:
+      name: ${file(env.yml):${self:custom.stage}.BUCKET}
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource: "arn:aws:s3:::*"
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+      Resource: "arn:aws:logs:*:*:*"
+    - Effect: "Allow"
+      Action:
+        - "ElasticTranscoder:CreateJob"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref" : "ServerlessDeploymentBucket"
+            - "/*"
+
+functions:
+  process:
+    handler: handler.process
+    # events: // should be uncommented, commented this just for deployment
+    #   - s3:
+    #       bucket: videoBucket
+    #       event: s3:ObjectCreated:*
+    #       rules:
+    #         - prefix: uploads/
+    #         - suffix: .mp4
+    #   - s3:
+    #       bucket: videoBucket
+    #       event: s3:ObjectCreated:*
+    #       rules:
+    #         - prefix: uploads/
+    #         - suffix: .MP4
+    #   - s3:
+    #       bucket: videoBucket
+    #       event: s3:ObjectCreated:*
+    #       rules:
+    #         - prefix: uploads/
+    #         - suffix: .mov
+    #   - s3:
+    #       bucket: videoBucket
+    #       event: s3:ObjectCreated:*
+    #       rules:
+    #         - prefix: uploads/
+    #         - suffix: .MOV
+    #   - s3:
+    #       bucket: videoBucket
+    #       event: s3:ObjectCreated:*
+    #       rules:
+    #         - prefix: uploads/
+    #         - suffix: .m4v
+    #   - s3:
+    #       bucket: videoBucket
+    #       event: s3:ObjectCreated:*
+    #       rules:
+    #         - prefix: uploads/
+    #         - suffix: .M4V
+  processed:
+    handler: handler.processed
+    events:
+      - sns: 
+          arn: ${file(env.yml):${self:custom.stage}.snsArn}
+          name: ${file(env.yml):${self:custom.stage}.snsName}
+
+#    Define function environment variables here
+#    environment:
+#      test: test
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"

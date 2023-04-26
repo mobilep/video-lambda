@@ -1,0 +1,2 @@
+This software is available to use as open source software under the Apache 2.0 licence agreement.
+See https://opensource.org/licences/Apache-2.0

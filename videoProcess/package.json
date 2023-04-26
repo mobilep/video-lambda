@@ -1,0 +1,17 @@
+{
+  "name": "video-processing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "firebase-admin": "^4.2.1",
+    "serverless": "^2.25.2",
+    "serverless-offline": "^6.8.0"
+  }
+}

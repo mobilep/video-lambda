@@ -1,0 +1,16 @@
+{
+  "name": "resize-photo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "deply:dev": "./node_modules/.bin/sls deploy --stage dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^4.2.1",
+    "serverless": "^1.61.2",
+    "sharp": "^0.24.0"
+  }
+}
